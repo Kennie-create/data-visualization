@@ -3,7 +3,13 @@ import ReactECharts from 'echarts-for-react';
 
 const SquirrelCensus = () => {
     const options = {
-        grid: { top: 8, right: 8, bottom: 24, left: 36 },
+        title : {
+          text: 'This is a nice bar graph',
+          textStyle: {
+            fontSize: 15
+          }
+        },
+        // grid: { top: 20, right: 8, bottom: 24, left: 36 },
         xAxis: {
           type: 'category',
           data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -13,8 +19,9 @@ const SquirrelCensus = () => {
         },
         series: [
           {
+            name: 'I appear when you move the cursor',
             data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: 'line',
+            type: 'bar',
             smooth: true,
           },
         ],
@@ -27,3 +34,4 @@ const SquirrelCensus = () => {
     
 
 export default SquirrelCensus;
+

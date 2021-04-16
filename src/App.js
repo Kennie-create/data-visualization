@@ -1,10 +1,15 @@
 import logo from './logo.svg';
 import './App.css';
 import SquirrelCensus from './SquirrelCensus';
+import TestChart from './TestChart'
 
 function App() {
   return (
-    <SquirrelCensus/>
+    <div>
+        <SquirrelCensus/>
+        <TestChart/>
+    </div>
+    
   );
 }
 
