@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useEffect,useState} from "react";
 import ReactECharts from "echarts-for-react";
 import Papaparse from "papaparse";
 
-const fetchSquirrelColors = () => {
+const fetchSquirrelColors = (setData) => {
   let surprise = Papaparse.parse("nyc_squirrels.csv", {
     download: true,
     complete: (results) => {
@@ -10,14 +10,19 @@ const fetchSquirrelColors = () => {
         return color[9];
       });
       let noRepeat = [...new Set(colors)];
-      console.log(noRepeat);
+        setData(noRepeat)
     },
   });
-  console.log("Papaparse",surprise);
 };
 
 const SquirrelCensus = () => {
-  fetchSquirrelColors();
+  const [data,setData]  = useState([]);
+
+
+  useEffect(() => {
+    fetchSquirrelColors(setData)
+  }, []);
+console.log(data)
   const options = {
     title: {
       text: "This is a nice bar graph",
@@ -28,7 +33,7 @@ const SquirrelCensus = () => {
     // grid: { top: 20, right: 8, bottom: 24, left: 36 },
     xAxis: {
       type: "category",
-      data: [],
+      data: data,
     },
     yAxis: {
       type: "value",
