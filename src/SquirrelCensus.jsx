@@ -1,28 +1,33 @@
-import React, {useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import Papaparse from "papaparse";
 
-const fetchSquirrelColors = (setData) => {
-  let surprise = Papaparse.parse("nyc_squirrels.csv", {
+const fetchSquirrelColors = (setColorsData) => {
+  Papaparse.parse("nyc_squirrels.csv", {
     download: true,
     complete: (results) => {
-      let colors = results.data.map((color) => {
-        return color[9];
+      let countObject = {};
+      results.data.forEach((row) => {
+        let currentSquirrelColor = row[8];
+        if (countObject[currentSquirrelColor] === undefined) {
+          countObject[currentSquirrelColor] = 1;
+        } else {
+          countObject[currentSquirrelColor]++;
+        }
       });
-      let noRepeat = [...new Set(colors)];
-        setData(noRepeat)
+      let countArray = Object.entries(countObject);
+      console.log(countArray);
+      setColorsData(countArray);
     },
   });
 };
 
 const SquirrelCensus = () => {
-  const [data,setData]  = useState([]);
-
+  const [colorsData, setColorsData] = useState([]);
 
   useEffect(() => {
-    fetchSquirrelColors(setData)
+    fetchSquirrelColors(setColorsData);
   }, []);
-console.log(data)
   const options = {
     title: {
       text: "This is a nice bar graph",
@@ -31,9 +36,11 @@ console.log(data)
       },
     },
     // grid: { top: 20, right: 8, bottom: 24, left: 36 },
+    dataset: {
+      source: colorsData,
+    },
     xAxis: {
       type: "category",
-      data: data,
     },
     yAxis: {
       type: "value",
@@ -41,7 +48,6 @@ console.log(data)
     series: [
       {
         name: "I appear when you move the cursor",
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
         type: "bar",
         smooth: true,
       },
